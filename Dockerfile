@@ -1,7 +1,7 @@
 # Usa la imagen oficial de PHP con Apache
 FROM php:8.2-apache
 
-# Instala dependencias necesarias
+# Instala dependencias del sistema
 RUN apt-get update && apt-get install -y \
     unzip \
     git \
@@ -16,6 +16,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copia los archivos del proyecto al contenedor
 COPY . /var/www/html
+
+# Instala dependencias de Laravel
+WORKDIR /var/www/html
+RUN composer install --no-dev --optimize-autoloader
 
 # Configura permisos
 RUN chown -R www-data:www-data /var/www/html \
