@@ -1,7 +1,7 @@
 # Usa la imagen oficial de PHP con Apache
 FROM php:8.2-apache
 
-# Instala dependencias del sistema
+# Instala dependencias necesarias, incluyendo el driver de PostgreSQL
 RUN apt-get update && apt-get install -y \
     unzip \
     git \
@@ -9,7 +9,8 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
-    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql pdo_mysql mbstring exif pcntl bcmath gd
 
 # Instala Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
